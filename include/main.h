@@ -41,6 +41,7 @@ uint8_t keyMap[8] = {
 
 uint8_t pollButtons();
 void digitalPulse(uint8_t pin);
+void digitalPulse(uint8_t pin, uint16_t duration);
 void triggerJoystick();
 void triggerKeyboard();
 void triggerMouse();

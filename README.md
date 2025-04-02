@@ -18,9 +18,9 @@ Connect D1 to Pin 4, OUT0 to Pin 5, and CUP to Pin 6 to use the default configur
 
 ## Usage
 
-Ensure that an NES controller is connected to the Arduino before plugging it into USB. 
+Plug an NES controller into the port. If a controller is not detected, the RX LED will blink slowly.
 
-As mentioned above, the software includes three modes: Joystick, Keyboard, and Mouse. Holding SELECT and START for 3-4 seconds will cycle to the next mode in the order listed.
+As mentioned above, the software includes three modes: Joystick, Keyboard, and Mouse. Holding SELECT and START for ~4 seconds will cycle to the next mode in the order listed. The RX LED will blink rapidly 3 times to signal that the mode has changed.
 
 Most mappings are configurable in [main.h](include/main.h).
 
