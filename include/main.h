@@ -1,12 +1,15 @@
 #ifndef MAIN_H
 #define MAIN_H
 
+#include <Arduino.h>
 #include <stdint.h>
-#include <XInput.h>
+#include "Joystick.h"
+#include "Keyboard.h"
+#include "Mouse.h"
 
-#define PIN_CLOCK (4)
+#define PIN_CLOCK (6)
 #define PIN_LATCH (5)
-#define PIN_DATA (6)
+#define PIN_DATA (4)
 
 #define BUTTON_A (0)
 #define BUTTON_B (1)
@@ -22,13 +25,25 @@ uint8_t buttonMap[4] = {
 };
 
 uint8_t keyMap[8] = {
-    'x', 'z', KEY_ESC, KEY_RETURN, KEY_UP_ARROW, KEY_DOWN_ARROW, KEY_LEFT_ARROW, KEY_RIGHT_ARROW
+    'x',                // A
+    'z',                // B
+    KEY_RIGHT_SHIFT,    // Select
+    KEY_RETURN,         // Start
+    KEY_UP_ARROW,       // Up
+    KEY_DOWN_ARROW,     // Down
+    KEY_LEFT_ARROW,     // Left
+    KEY_RIGHT_ARROW     // Right
 };
+
+#define MOUSE_SCALE_X (5)
+#define MOUSE_SCALE_Y (5)
+#define MOUSE_SCALE_SCROLL (-1)
 
 uint8_t pollButtons();
 void digitalPulse(uint8_t pin);
-void triggerJoystick(uint8_t state, uint8_t lastState);
-void triggerKeyboard(uint8_t state, uint8_t lastState);
-// void triggerXInput(uint8_t state, uint8_t lastState);
+void triggerJoystick();
+void triggerKeyboard();
+void triggerMouse();
+void clearAll();
 
 #endif
