@@ -24,11 +24,22 @@ uint8_t buttonMap[4] = {
     BUTTON_A, BUTTON_B, BUTTON_SEL, BUTTON_STA
 };
 
-uint8_t keyMap[8] = {
+uint8_t standardKeys[8] = {
     'x',                // A
     'z',                // B
     KEY_RIGHT_SHIFT,    // Select
     KEY_RETURN,         // Start
+    KEY_UP_ARROW,       // Up
+    KEY_DOWN_ARROW,     // Down
+    KEY_LEFT_ARROW,     // Left
+    KEY_RIGHT_ARROW     // Right
+};
+
+uint8_t overcookedKeys[8] = {
+    ' ',                // A
+    KEY_LEFT_CTRL,      // B
+    KEY_ESC,            // Select
+    KEY_LEFT_ALT,       // Start
     KEY_UP_ARROW,       // Up
     KEY_DOWN_ARROW,     // Down
     KEY_LEFT_ARROW,     // Left
@@ -43,7 +54,7 @@ uint8_t pollButtons();
 void digitalPulse(uint8_t pin);
 void digitalPulse(uint8_t pin, uint16_t duration);
 void triggerJoystick();
-void triggerKeyboard();
+void triggerKeyboard(uint8_t keyMap[]);
 void triggerMouse();
 void clearAll();
 

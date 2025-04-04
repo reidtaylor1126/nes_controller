@@ -12,7 +12,7 @@ uint8_t state, lastState, changes, newHigh, newLow;
 int lastX, lastY;
 uint8_t mode = 0;
 uint8_t detected = 0;
-uint16_t held_time=0;
+uint16_t heldTime = 0;
 uint16_t count = 0;
 
 void setup() {
@@ -49,36 +49,47 @@ void loop() {
   // Serial.print(state, BIN);
 
   if (detected) {
-    count = 0;
-    digitalWrite(LED_BUILTIN_RX, HIGH);
+
+    count++;
+    if (count / 15 <= mode) {
+      if (count % 15 == 0) {
+        digitalWrite(LED_BUILTIN_RX, LOW);
+      } else if (count % 15 == 8) {
+        digitalWrite(LED_BUILTIN_RX, HIGH);
+      }
+    }
+    if (count > 200)
+      count = 0;
 
     changes = state ^ lastState;
     newHigh = changes & state;
     newLow = changes & lastState;
   
     if ((~state & 4) && (~state & 8)) {
-      held_time++;
-      Serial.println(held_time);
-      if (held_time > 300) {
-        held_time = 0;
+      heldTime++;
+      Serial.println(heldTime);
+      if (heldTime > 300) {
+        heldTime = 0;
         clearAll();
         for(uint8_t i = 0; i < 3; i++) {
           digitalPulse(LED_BUILTIN_RX, 160);
           delay(160);
         }
         digitalWrite(LED_BUILTIN_RX, HIGH);
-        mode = (mode + 1) % 3;
+        mode = (mode + 1) % 4;
       }
     } else {
-      if (held_time > 0)
-        held_time--;
+      if (heldTime > 0)
+      heldTime--;
     }
     
-    if (mode == 1)
-      triggerKeyboard();
-    else if (mode == 0)
+    if (mode == 0)
       triggerJoystick();
+    else if (mode == 1)
+      triggerKeyboard(standardKeys);
     else if (mode == 2)
+      triggerKeyboard(overcookedKeys);
+    else if (mode == 3)
       triggerMouse();
   
     lastState = state;
@@ -91,7 +102,7 @@ void loop() {
     if (count == 5)
       digitalWrite(LED_BUILTIN_RX, HIGH);
 
-    else if (count == 10) {
+    else if (count >= 10) {
       digitalWrite(LED_BUILTIN_RX, LOW);
       count = 0;
     }
@@ -169,7 +180,7 @@ void triggerJoystick() {
   }
 }
 
-void triggerKeyboard() {
+void triggerKeyboard(uint8_t keyMap[]) {
 
   uint8_t mask = 1;
 
@@ -219,10 +230,7 @@ void triggerMouse() {
 
 void clearAll() {
   Keyboard.releaseAll();
-  Mouse.release(0);
-  Mouse.release(1);
-  Mouse.release(2);
-  Mouse.release(3);
+  Mouse.release(MOUSE_ALL);
   Joystick.setXAxis(0);
   Joystick.setYAxis(0);
   for (int i = 0; i < 4; i++) {
